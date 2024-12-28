@@ -23,10 +23,9 @@ pipeline {
 
     stage('Push') {
       steps {
-        sh '''docker.withRegistry(\'https://registry.hub.docker.com\', \'docker_hub_creds_id\') {
-    app.push("${env.BUILD_NUMBER}")
-    app.push("latest")
-}'''
+        sh '''docker.withRegistry(\'https://registry.hub.docker.com\', \'3e26d987-4d38-4efd-95c2-a7a7e112ce50\') {
+                        def app = docker.build("my-app")
+                        app.push("latest")'''
         }
       }
 
