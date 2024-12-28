@@ -24,12 +24,7 @@ pipeline {
     stage('Push') {
       steps {
         sh '''docker.withRegistry(\'https://registry.hub.docker.com\', DOCKER_CREDENTIALS) {
-sh \'\'\'
-
-docker tag my-app:latest myusername/my-app:latest
-
-docker push myusername/my-app:latest
-\'\'\''''
+docker.image("${DOCKER_IMAGE}").push()'''
         }
       }
 
