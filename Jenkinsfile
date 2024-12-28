@@ -23,11 +23,18 @@ pipeline {
 
     stage('Push') {
       steps {
-        sh '''docker.withRegistry(\'https://registry.hub.docker.com\', \'3e26d987-4d38-4efd-95c2-a7a7e112ce50\') {
-                        def app = docker.build("my-app")
-                        app.push("latest")'''
+        sh '''docker.withRegistry(\'https://registry.hub.docker.com\', DOCKER_CREDENTIALS) {
+sh \'\'\'
+
+docker tag my-app:latest myusername/my-app:latest
+
+docker push myusername/my-app:latest
+\'\'\''''
         }
       }
 
+    }
+    environment {
+      DOCKER_CREDENTIALS = '3e26d987-4d38-4efd-95c2-a7a7e112ce50'
     }
   }
