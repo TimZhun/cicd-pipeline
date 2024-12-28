@@ -21,20 +21,16 @@ pipeline {
 
     stage('Push') {
       steps {
-        sh '''                    docker.withRegistry(\'https://registry.hub.docker.com\', DOCKER_CREDENTIALS) {
-                        // Tag the Docker image with the repository name
-                        docker.image("${DOCKER_IMAGE}").tag("${DOCKER_REPO}:latest")
-
-                        // Push the image to Docker Hub
-                        docker.image("${DOCKER_REPO}:latest").push()'''
-        }
+        sh '''docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD} https://registry.hub.docker.com
+docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}'''
       }
+    }
 
-    }
-    environment {
-      DOCKER_CREDENTIALS = 'TimZhun/release:${env.BUILD_NUMBER}'
-      DOCKER_IMAGE = 'my-app:latest'
-      DOCKER_USERNAME = 'credentials(\'3e26d987-4d38-4efd-95c2-a7a7e112ce50\')'
-      DOCKER_REPO = 'TimZhun/my-app'
-    }
   }
+  environment {
+    DOCKER_CREDENTIALS = 'TimZhun/release:${env.BUILD_NUMBER}'
+    DOCKER_IMAGE = 'my-app:latest'
+    DOCKER_USERNAME = 'credentials(\'3e26d987-4d38-4efd-95c2-a7a7e112ce50\')'
+    DOCKER_REPO = 'TimZhun/my-app'
+  }
+}
