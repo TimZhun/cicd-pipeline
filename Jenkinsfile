@@ -17,7 +17,7 @@ pipeline {
 
     stage('Docker') {
       steps {
-        sh 'docker build -t my-app:latest .'
+        sh 'docker build --platform linux/amd64 -t my-app:latest .'
       }
     }
 
