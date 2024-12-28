@@ -21,14 +21,20 @@ pipeline {
 
     stage('Push') {
       steps {
-        sh '''docker.withRegistry(\'https://registry.hub.docker.com\', DOCKER_CREDENTIALS) {
-docker.image("${DOCKER_IMAGE}").push()
-}'''
-        }
-      }
+        sh '''echo "$DOCKER_USERNAME_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
+                    
+docker tag ${DOCKER_IMAGE} ${DOCKER_IMAGE}
+
+
+docker push ${DOCKER_IMAGE}'''
+      }
     }
-    environment {
-      DOCKER_CREDENTIALS = 'TimZhun/release:${env.BUILD_NUMBER}'
-    }
+
   }
+  environment {
+    DOCKER_CREDENTIALS = 'TimZhun/release:${env.BUILD_NUMBER}'
+    DOCKER_IMAGE = 'TimZhun/release:${env.BUILD_NUMBER}'
+    DOCKER_USERNAME = 'credentials(\'3e26d987-4d38-4efd-95c2-a7a7e112ce50\')'
+  }
+}
