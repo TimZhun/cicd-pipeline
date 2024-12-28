@@ -40,6 +40,6 @@ pipeline {
 
   }
   environment {
-    DOCKER_IMAGE = 'my-app'
+    DOCKER_IMAGE = 'tamirlah/my-app'
   }
 }
