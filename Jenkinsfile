@@ -22,7 +22,8 @@ pipeline {
     stage('Push') {
       steps {
         sh '''docker.withRegistry(\'https://registry.hub.docker.com\', DOCKER_CREDENTIALS) {
-docker.image("${DOCKER_IMAGE}").push()'''
+docker.image("${DOCKER_IMAGE}").push()
+}'''
         }
       }
 
