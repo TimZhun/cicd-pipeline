@@ -16,7 +16,7 @@ pipeline {
     stage('Docker') {
       steps {
         script {
-          echo "tws"
+          sh "docker build -t ${DOCKER_IMAGE}:${env.BUILD_NUMBER} -t ${DOCKER_IMAGE}:latest ."
         }
 
       }
@@ -24,12 +24,15 @@ pipeline {
 
     stage('Push') {
       steps {
-        sh 'docker push tamirlah/my-app:latest'
+        sh '''docker.withRegistry(\'https://registry.hub.docker.com\', \'tamirlah-docker\') {
+            // Push the Docker image with the \'latest\' tag only
+            sh "docker push ${DOCKER_IMAGE}:latest"
+          }'''
+        }
       }
-    }
 
+    }
+    environment {
+      DOCKER_IMAGE = 'tamirlah/my-app'
+    }
   }
-  environment {
-    DOCKER_IMAGE = 'tamirlah/my-app'
-  }
-}
