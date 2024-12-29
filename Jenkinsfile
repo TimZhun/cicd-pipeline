@@ -25,9 +25,11 @@ pipeline {
     stage('Push') {
       steps {
         script {
-          docker.withRegistry('https://registry.hub.docker.com', 'tamirlah-docker') {
-            // Push the Docker image with the 'latest' tag only
-            sh "docker push ${DOCKER_IMAGE}:latest"
+          docker.withRegistry('https://registry.hub.docker.com', 'tamirlah-docker')
+
+          {
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
           }
         }
 
