@@ -16,7 +16,7 @@ pipeline {
     stage('Docker') {
       steps {
         script {
-          sh "docker build -t ${DOCKER_IMAGE}:${env.BUILD_NUMBER} -t ${DOCKER_IMAGE}:latest ."
+          app = docker.build("${env.IMAGE_NAME}:${env.BUILD_NUMBER}")
         }
 
       }
@@ -25,9 +25,7 @@ pipeline {
     stage('Push') {
       steps {
         script {
-          docker.withRegistry('https://registry.hub.docker.com', 'tamirlah-docker')
-
-          {
+          docker.withRegistry("https://${env.DOCKER_REGISTRY}", "${env.DOCKER_CREDENTIALS_ID}") {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
           }
@@ -38,6 +36,8 @@ pipeline {
 
   }
   environment {
-    DOCKER_IMAGE = 'tamirlah/my-app'
+    IMAGE_NAME = 'tamirlah/my-app'
+    DOCKER_REGISTRY = 'registry.hub.docker.com'
+    DOCKER_CREDENTIALS_ID = 'tamirlah-docker'
   }
 }
